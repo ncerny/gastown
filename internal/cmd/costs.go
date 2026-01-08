@@ -529,7 +529,9 @@ func runCostsRecord(cmd *cobra.Command, args []string) error {
 		session = detectCurrentTmuxSession()
 	}
 	if session == "" {
-		return fmt.Errorf("--session flag required (or set GT_SESSION env var, or GT_RIG/GT_ROLE)")
+		// Session context unavailable (naked mode, manual starts) - skip gracefully
+		fmt.Fprintln(os.Stderr, "gt costs record: skipping - could not detect session (set GT_SESSION or use --session flag)")
+		return nil
 	}
 
 	t := tmux.NewTmux()
