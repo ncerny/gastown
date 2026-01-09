@@ -1824,6 +1824,7 @@ func (b *Beads) MergeSlotEnsureExists() (string, error) {
 
 // RigFields contains the fields specific to rig identity beads.
 type RigFields struct {
+	Name   string // Rig name (e.g., "gastown", "beads")
 	Repo   string // Git URL for the rig's repository
 	Prefix string // Beads prefix for this rig (e.g., "gt", "bd")
 	State  string // Operational state: active, archived, maintenance
@@ -1839,6 +1840,8 @@ func FormatRigDescription(name string, fields *RigFields) string {
 	lines = append(lines, fmt.Sprintf("Rig identity bead for %s.", name))
 	lines = append(lines, "")
 
+	// Always include name field for schema consistency
+	lines = append(lines, fmt.Sprintf("name: %s", name))
 	if fields.Repo != "" {
 		lines = append(lines, fmt.Sprintf("repo: %s", fields.Repo))
 	}
@@ -1874,6 +1877,8 @@ func ParseRigFields(description string) *RigFields {
 		}
 
 		switch strings.ToLower(key) {
+		case "name":
+			fields.Name = value
 		case "repo":
 			fields.Repo = value
 		case "prefix":

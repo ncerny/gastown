@@ -392,6 +392,7 @@ func runRigAdd(cmd *cobra.Command, args []string) error {
 		bd := beads.New(beadsWorkDir)
 		rigBeadID := beads.RigBeadIDWithPrefix(newRig.Config.Prefix, name)
 		fields := &beads.RigFields{
+			Name:   name,
 			Repo:   gitURL,
 			Prefix: newRig.Config.Prefix,
 			State:  "active",
